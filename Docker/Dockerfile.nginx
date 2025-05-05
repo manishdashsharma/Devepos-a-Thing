@@ -1,0 +1,8 @@
+FROM nginx:stable-alpine
+
+# Use build arguments to determine which config to use
+ARG ENVIRONMENT=production
+COPY nginx.${ENVIRONMENT}.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80 443
+CMD ["nginx", "-g", "daemon off;"]
