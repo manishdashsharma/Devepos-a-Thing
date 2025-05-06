@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy to QA Server
         env:
-          DEPLOY_PATH: /home/manishdashsharma/qa
+          DEPLOY_PATH: /home/qa
           DEPLOY_HOST: ${{ secrets.SERVER_IP }}
           DEPLOY_USER: ${{ secrets.SERVER_USER }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
@@ -86,7 +86,7 @@ jobs:
           
           # Check if services are responding
           echo "🔍 Verifying QA service availability..."
-          curl -f -s -S --retry 3 --retry-delay 5 -I https://qa.manishdashsharma.site || {
+          curl -f -s -S --retry 3 --retry-delay 5 -I https://qa.manishdashsharma.site:8443 || {
             echo "❌ QA Service verification failed"
             exit 1
           }

@@ -22,7 +22,7 @@ jobs:
 
       - name: Deploy to Production Server
         env:
-          DEPLOY_PATH: /home/manishdashsharma/production
+          DEPLOY_PATH: /home/production
           DEPLOY_HOST: ${{ secrets.SERVER_IP }}
           DEPLOY_USER: ${{ secrets.SERVER_USER }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
