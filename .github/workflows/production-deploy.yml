@@ -55,8 +55,8 @@ jobs:
             git reset --hard origin/main
 
             # Continue with deployment...
-            if [ ! -f \"docker-compose.prod.yml\" ]; then
-              echo '❌ Error: docker-compose.prod.yml not found'
+            if [ ! -f \"Docker/docker-compose.yml\" ]; then
+              echo '❌ Error: Docker/docker-compose.yml not found'
               exit 1
             fi
 
@@ -64,14 +64,13 @@ jobs:
             echo '🔒 Checking/Updating SSL certificates...'
             certbot certonly --standalone -d $DOMAIN --non-interactive --agree-tos -m mdashsharma95@gmail.com || { echo '❌ Certbot failed'; exit 1; }
             
-
             # Stop existing containers
             echo '🛑 Stopping existing containers...'
-            docker-compose -f docker-compose.prod.yml down || true
+            docker compose -f Docker/docker-compose.yml --profile production down || true
 
             # Build and deploy with Docker Compose
             echo '🏗️ Building and deploying with Docker Compose...'
-            docker-compose --env-file .env.production -f docker-compose.prod.yml up -d --build || { echo '❌ Docker Compose failed'; exit 1; }
+            docker compose -f Docker/docker-compose.yml --env-file .env.production --profile production up -d --build || { echo '❌ Docker Compose failed'; exit 1; }
 
             # Clean up old Docker resources
             echo '🧹 Cleaning up Docker resources...'

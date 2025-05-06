@@ -55,8 +55,8 @@ jobs:
             git reset --hard origin/development
 
             # Continue with deployment...
-            if [ ! -f \"docker-compose.qa.yml\" ]; then
-              echo '❌ Error: docker-compose.qa.yml not found'
+            if [ ! -f \"Docker/docker-compose.yml\" ]; then
+              echo '❌ Error: Docker/docker-compose.yml not found'
               exit 1
             fi
 
@@ -66,11 +66,11 @@ jobs:
 
             # Stop existing QA containers
             echo '🛑 Stopping existing QA containers...'
-            docker-compose -f docker-compose.qa.yml down || true
+            docker compose -f Docker/docker-compose.yml --profile qa down || true
 
             # Build and deploy with Docker Compose
             echo '🏗️ Building and deploying QA with Docker Compose...'
-            docker-compose --env-file .env.qa -f docker-compose.qa.yml up -d --build || { echo '❌ Docker Compose failed for QA'; exit 1; }
+            docker compose -f Docker/docker-compose.yml --env-file .env.qa --profile qa up -d --build || { echo '❌ Docker Compose failed for QA'; exit 1; }
 
             # Clean up old Docker resources
             echo '🧹 Cleaning up Docker resources...'
@@ -86,7 +86,7 @@ jobs:
           
           # Check if services are responding
           echo "🔍 Verifying QA service availability..."
-          curl -f -s -S --retry 3 --retry-delay 5 -I https://qa.manishdashsharma.in || {
+          curl -f -s -S --retry 3 --retry-delay 5 -I https://qa.manishdashsharma.site || {
             echo "❌ QA Service verification failed"
             exit 1
           }
