@@ -12,7 +12,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1', router);
+app.use('/v1', router);
 
 app.use((req, res, next) => {
     try {
